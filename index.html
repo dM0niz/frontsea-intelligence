@@ -2,261 +2,1150 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Frontsea Intelligence</title>
+  <title>FrontSea Intelligence</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="FrontSea Intelligence builds intelligence for the ocean.">
-
+  <meta name="description" content="FrontSea Intelligence builds the future of ocean intelligence through AI, environmental intelligence and maritime technologies.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg: #05080d;
+      --text: #e6eef6;
+      --text-muted: rgba(230, 238, 246, 0.65);
+      --text-soft: rgba(230, 238, 246, 0.88);
+      --border: rgba(230, 238, 246, 0.1);
+      --border-hover: rgba(230, 238, 246, 0.22);
+      --blue: #4da6ff;
+      --blue-glow: rgba(77, 166, 255, 0.15);
+      --green: #22c55e;
+      --yellow: #eab308;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --glass: rgba(5, 8, 13, 0.55);
+      --section-gap: clamp(5rem, 10vw, 8rem);
+      --content-width: 1100px;
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
       font-family: Inter, Arial, sans-serif;
-      background: #05080d;
-      color: #e6eef6;
+      background: var(--bg);
+      color: var(--text);
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Animated background */
+    .bg-layer {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background: var(--bg);
+    }
+
+    .bg-gradient {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(77, 166, 255, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 20%, rgba(30, 100, 200, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 30% at 20% 80%, rgba(20, 80, 160, 0.05) 0%, transparent 50%);
+      animation: gradientShift 18s ease-in-out infinite alternate;
+    }
+
+    @keyframes gradientShift {
+      0% { opacity: 0.7; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.02); }
+      100% { opacity: 0.8; transform: scale(1.01); }
+    }
+
+    .bg-ocean {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 45vh;
+      z-index: -1;
+      background:
+        linear-gradient(to top, rgba(5, 8, 13, 0) 0%, var(--bg) 85%),
+        url("bg-ocean.jpeg") center bottom / cover no-repeat;
+      pointer-events: none;
     }
 
     /* Language switch */
     .lang-switch {
-      position: absolute;
-      top: 18px;
+      position: fixed;
+      top: 20px;
       right: 28px;
       font-size: 0.85rem;
-      opacity: 0.6;
-      z-index: 10;
+      opacity: 0.7;
+      z-index: 100;
+      letter-spacing: 0.02em;
     }
 
     .lang-switch a {
-      color: #e6eef6;
+      color: var(--text);
       text-decoration: none;
       margin: 0 4px;
+      transition: opacity 0.2s ease;
     }
 
-    .lang-switch a:hover {
+    .lang-switch a:hover,
+    .lang-switch a.active {
       opacity: 1;
     }
 
-    /* Content */
-    .content {
-      padding: 28px 40px 40px;
-      max-width: 1100px;
+    .lang-switch a.active {
+      font-weight: 600;
+    }
+
+    /* Layout */
+    .page {
+      position: relative;
+      z-index: 1;
+    }
+
+    .container {
+      max-width: var(--content-width);
       margin: 0 auto;
+      padding: 0 clamp(1.25rem, 4vw, 2.5rem);
     }
 
-    .header {
-      text-align: center;
-      margin-bottom: 150px;
+    section {
+      padding: var(--section-gap) 0;
     }
 
-    .logo {
-      width: 100px;
-      margin-bottom: 5px;
+    section + section {
+      border-top: 1px solid var(--border);
+    }
+
+    .section-label {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 1rem;
       opacity: 0.9;
     }
 
-    h1 {
-      font-size: 3.1rem;
-      margin-bottom: 0.3rem;
+    .section-title {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 600;
+      margin: 0 0 1.25rem;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
     }
 
-    h2 {
-      font-size: 1.1rem;
+    .section-desc {
+      font-size: 1.05rem;
+      color: var(--text-soft);
+      max-width: 680px;
+      margin: 0 0 2.5rem;
+      line-height: 1.75;
+    }
+
+    /* Reveal animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 1.5rem 4rem;
+      border-top: none !important;
+    }
+
+    .hero-logo {
+      width: clamp(80px, 12vw, 110px);
+      margin-bottom: 1.5rem;
+      opacity: 0.95;
+      filter: drop-shadow(0 0 24px var(--blue-glow));
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 3.5rem);
+      font-weight: 700;
+      margin: 0 0 0.5rem;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+
+    .hero-tagline {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
       font-weight: 400;
-      opacity: 0.75;
+      color: var(--text-muted);
+      margin: 0 0 2.5rem;
+      letter-spacing: 0.01em;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      justify-content: center;
+    }
+
+    .badge {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.45rem 0.9rem;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.02);
+      transition: border-color 0.25s ease, color 0.25s ease;
+    }
+
+    .badge:hover {
+      border-color: var(--border-hover);
+      color: var(--text);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1.5rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      font-family: inherit;
+      letter-spacing: 0.02em;
+      text-decoration: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: rgba(77, 166, 255, 0.12);
+      border-color: rgba(77, 166, 255, 0.35);
+      color: var(--text);
+      box-shadow: 0 0 20px var(--blue-glow);
+    }
+
+    .btn-primary:hover {
+      background: rgba(77, 166, 255, 0.22);
+      border-color: var(--blue);
+      box-shadow: 0 0 32px rgba(77, 166, 255, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border-color: rgba(230, 238, 246, 0.35);
+      color: var(--text);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(230, 238, 246, 0.06);
+      border-color: var(--text);
+      transform: translateY(-1px);
+    }
+
+    /* Cards */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3), 0 0 24px var(--blue-glow);
+      transform: translateY(-3px);
+    }
+
+    .card-logo {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      object-fit: cover;
+      margin-bottom: 1.25rem;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin: 0;
+      letter-spacing: -0.01em;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .status--live .status-dot,
+    .status--deployed .status-dot {
+      background: var(--green);
+      box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+
+    .status--soon .status-dot {
+      background: var(--yellow);
+      box-shadow: 0 0 8px rgba(234, 179, 8, 0.5);
+    }
+
+    .status--dev .status-dot {
+      background: var(--blue);
+      box-shadow: 0 0 8px rgba(77, 166, 255, 0.5);
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .status--live, .status--deployed { color: var(--green); }
+    .status--soon { color: var(--yellow); }
+    .status--dev { color: var(--blue); }
+
+    .card-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin: 0 0 1.5rem;
+      flex-grow: 1;
+    }
+
+    .card .btn {
+      align-self: flex-start;
+      margin-top: auto;
+    }
+
+    /* Roadmap */
+    .roadmap {
+      max-width: 520px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .roadmap::before {
+      content: "";
+      position: absolute;
+      left: 27px;
+      top: 28px;
+      bottom: 28px;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--green), var(--yellow), var(--yellow), var(--blue));
+      opacity: 0.35;
+    }
+
+    .roadmap-item {
+      display: flex;
+      gap: 1.5rem;
+      padding: 1.25rem 0;
+      position: relative;
+      opacity: 0;
+      transform: translateX(-12px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .roadmap-item.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .roadmap-marker {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 0 16px var(--blue-glow);
+    }
+
+    .roadmap-marker img {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .roadmap-content {
+      flex: 1;
+      padding-top: 0.35rem;
+    }
+
+    .roadmap-year {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 0.25rem;
+    }
+
+    .roadmap-name {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin: 0 0 0.35rem;
+    }
+
+    .roadmap-arrow {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      opacity: 0.4;
+      padding: 0.25rem 0;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); opacity: 0.3; }
+      50% { transform: translateY(4px); opacity: 0.6; }
+    }
+
+    /* Operations panel */
+    .ops-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: clamp(2rem, 5vw, 3rem);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 4px 32px rgba(0, 0, 0, 0.2);
+    }
+
+    .ops-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .ops-item {
+      padding: 1.25rem 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.02);
+      font-size: 0.95rem;
+      color: var(--text-soft);
+      transition: border-color 0.25s ease;
+    }
+
+    .ops-item:hover {
+      border-color: var(--border-hover);
+    }
+
+    .ops-note {
+      margin-top: 2rem;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* Team */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .team-card {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--card-bg);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .team-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.25), 0 0 30px var(--blue-glow);
+      transform: translateY(-4px);
+    }
+
+    .team-portrait {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 1.25rem;
+      border: 2px solid var(--border);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .team-card:hover .team-portrait {
+      border-color: rgba(77, 166, 255, 0.4);
+      box-shadow: 0 0 24px var(--blue-glow);
+    }
+
+    .team-role {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-soft);
+      margin: 0;
+      letter-spacing: 0.01em;
+    }
+
+    /* Gear section */
+    .gear-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: clamp(2rem, 5vw, 3rem);
+      max-width: 720px;
+    }
+
+    /* Blue Paper */
+    .bluepaper-card {
+      background: linear-gradient(135deg, rgba(77, 166, 255, 0.06) 0%, var(--card-bg) 50%, rgba(5, 8, 13, 0.8) 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: clamp(2.5rem, 6vw, 4rem);
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto;
+      box-shadow: 0 4px 48px rgba(0, 0, 0, 0.25), 0 0 40px var(--blue-glow);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .bluepaper-card:hover {
+      box-shadow: 0 8px 56px rgba(0, 0, 0, 0.3), 0 0 56px rgba(77, 166, 255, 0.2);
+    }
+
+    .bluepaper-card .section-title {
+      margin-bottom: 1rem;
+    }
+
+    .bluepaper-card .section-desc {
+      margin: 0 auto 2rem;
+    }
+
+    /* Footer */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 4rem 0 2rem;
+      margin-top: var(--section-gap);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-col h4 {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin: 0 0 1.25rem;
+      opacity: 0.9;
+    }
+
+    .footer-col p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
       margin: 0;
     }
 
-    .text-block {
-      max-width: 760px;
-      margin: 0 auto;
-      text-align: left;
+    .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
     }
 
-    p {
-      line-height: 1.75;
-      font-size: 1.05rem;
-      opacity: 0.88;
-      margin-bottom: 1.5rem;
+    .footer-links li {
+      margin-bottom: 0.65rem;
     }
 
-    footer {
-      margin-top: 3rem;
-      text-align: center;
-      font-size: 0.9rem;
-      opacity: 0.6;
-    }
-
-    /* Bottom image */
-    .bottom {
-      margin-top: auto;
-      height: 160px;
-      background:
-        linear-gradient(
-          to top,
-          rgba(5,8,13,0) 0%,
-          #05080d 95%
-        ),
-        url("bg-ocean.jpeg") center bottom / cover no-repeat;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      padding-bottom: 50px;
-    }
-
-    .bluepaper-btn {
-      padding: 12px 22px;
-      border: 1px solid rgba(230,238,246,0.5);
-      color: #e6eef6;
+    .footer-links a {
+      color: var(--text-muted);
       text-decoration: none;
       font-size: 0.9rem;
-      letter-spacing: 0.5px;
-      border-radius: 4px;
-      transition: all 0.2s ease;
+      transition: color 0.2s ease;
     }
 
-    .bluepaper-btn:hover {
-      background: rgba(230,238,246,0.08);
-      border-color: #e6eef6;
+    .footer-links a:hover {
+      color: var(--text);
     }
 
-    .site-footer {
-      background: #05080d;
-      border-top: 1px solid rgba(230,238,246,0.1);
-      padding: 24px 16px;
+    .footer-bottom {
       text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
       font-size: 0.85rem;
-      opacity: 0.6;
+      color: var(--text-muted);
     }
 
-    .footer-inner {
-      max-width: 1100px;
-      margin: 0 auto;
+    .footer-bottom p {
+      margin: 0.25rem 0;
     }
 
-    /* Mobile */
-    @media (max-width: 768px) {
-      .content {
-        padding: 36px 24px 32px;
+    /* Responsive */
+    @media (max-width: 900px) {
+      .cards-grid,
+      .team-grid {
+        grid-template-columns: 1fr;
+        max-width: 480px;
+        margin: 0 auto;
       }
 
-      h1 {
-        font-size: 2.4rem;
+      .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
 
-      h2 {
-        font-size: 1rem;
+      .ops-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .lang-switch {
+        top: 14px;
+        right: 16px;
       }
 
-      .logo {
-        width: 90px;
-        margin-bottom: 14px;
+      .hero {
+        padding-top: 5rem;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        max-width: 300px;
+      }
+
+      .hero-actions .btn {
+        width: 100%;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .roadmap::before {
+        left: 23px;
+      }
+
+      .roadmap-marker {
+        width: 48px;
+        height: 48px;
+      }
+
+      .roadmap-marker img {
+        width: 30px;
+        height: 30px;
       }
     }
   </style>
 </head>
-
 <body>
 
-  <!-- Language toggle -->
+  <div class="bg-layer" aria-hidden="true"></div>
+  <div class="bg-gradient" aria-hidden="true"></div>
+  <div class="bg-ocean" aria-hidden="true"></div>
+
   <div class="lang-switch">
-    <a href="#" onclick="setLang('en')">EN</a> |
-    <a href="#" onclick="setLang('pt')">PT</a>
+    <a href="#" onclick="setLang('en'); return false;" id="lang-en" class="active">EN</a> |
+    <a href="#" onclick="setLang('pt'); return false;" id="lang-pt">PT</a>
   </div>
 
-  <!-- ENGLISH -->
-  <div class="lang lang-en">
-    <div class="content">
-      <div class="header">
-        <img src="logo-dark.png" alt="Frontsea Intelligence logo" class="logo">
-        <h1>FrontSea Intelligence</h1>
-        <h2>The front seat for the Front Sea.</h2>
+  <div class="page">
+
+    <!-- Hero -->
+    <section class="hero" id="top">
+      <img src="logo-dark.png" alt="FrontSea Intelligence" class="hero-logo">
+      <h1>FrontSea Intelligence</h1>
+      <p class="hero-tagline" data-i18n="tagline">The front seat for the Front Sea.</p>
+
+      <div class="hero-actions">
+        <a href="https://azureai.pt" target="_blank" rel="noopener" class="btn btn-primary" data-i18n="btnLaunch">Launch Azure AI Weather</a>
+        <a href="#bluepaper" class="btn btn-ghost" data-i18n="btnRead">Read Blue Paper</a>
       </div>
 
-      <div class="text-block">
-        <p><strong>FrontSea Intelligence builds intelligence for the ocean.</strong></p>
-
-        <p>
-          We approach the sea not as a static environment, but as a living,
-          interconnected system shaped by weather, navigation and human activity.
-        </p>
-
-        <p>
-          As maritime environments grow more complex, understanding the sea
-          requires more than access to raw data. It requires context,
-          interpretation and the ability to learn from changing conditions
-          over time.
-        </p>
-
-        <p>
-          FrontSea is a long-term initiative focused on exploring how data,
-          science and artificial intelligence can support clearer, safer and
-          more informed decision-making across maritime environments.
-        </p>
+      <div class="badges">
+        <span class="badge" data-i18n="badge1">AI Powered</span>
+        <span class="badge" data-i18n="badge2">Ocean Intelligence</span>
+        <span class="badge" data-i18n="badge3">Made in Portugal</span>
+        <span class="badge" data-i18n="badge4">Environmental Data</span>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <!-- PORTUGUÊS -->
-  <div class="lang lang-pt">
-    <div class="content">
-      <div class="header">
-        <img src="logo-dark.png" alt="Frontsea Intelligence logo" class="logo">
-        <h1>FrontSea Intelligence</h1>
-        <h2>The front seat for the Front Sea.</h2>
+    <!-- Mission -->
+    <section id="mission">
+      <div class="container reveal">
+        <span class="section-label" data-i18n="missionLabel">Mission</span>
+        <h2 class="section-title" data-i18n="missionTitle">Our Mission</h2>
+        <p class="section-desc" data-i18n="missionDesc">FrontSea develops intelligent technologies for the ocean. We combine artificial intelligence, weather intelligence, environmental monitoring and maritime technologies to build tools that help people understand and navigate maritime environments with greater clarity and confidence.</p>
       </div>
+    </section>
 
-      <div class="text-block">
-        <p><strong>A FrontSea Intelligence constrói inteligência para o oceano.</strong></p>
+    <!-- Ecosystem -->
+    <section id="ecosystem">
+      <div class="container reveal">
+        <span class="section-label" data-i18n="ecosystemLabel">Ecosystem</span>
+        <h2 class="section-title" data-i18n="ecosystemTitle">Our Ecosystem</h2>
+        <p class="section-desc" data-i18n="ecosystemDesc">A growing suite of applications designed to bring intelligence to every layer of maritime activity.</p>
 
-        <p>
-          Abordamos o mar não como um ambiente estático, mas como um sistema vivo
-          e interligado, moldado pelo clima, pela navegação e pela atividade humana.
-        </p>
+        <div class="cards-grid">
+          <article class="card">
+            <img src="azurelogo.jpeg" alt="Azure AI Weather" class="card-logo">
+            <div class="card-header">
+              <h3 class="card-title">Azure AI Weather</h3>
+              <span class="status status--live">
+                <span class="status-dot"></span>
+                <span data-i18n="statusLive">LIVE</span>
+              </span>
+            </div>
+            <p class="card-desc" data-i18n="azureDesc">Real-time coastal weather intelligence for sailors, fishermen and maritime professionals. Powered by AI-driven forecasts and local environmental data.</p>
+            <a href="https://azureai.pt" target="_blank" rel="noopener" class="btn btn-primary" data-i18n="btnLaunch">Launch Azure AI Weather</a>
+          </article>
 
-        <p>
-          À medida que os ambientes marítimos se tornam mais complexos,
-          compreender o mar exige mais do que acesso a dados brutos. Exige
-          contexto, interpretação e a capacidade de aprender com condições
-          em constante mudança ao longo do tempo.
-        </p>
+          <article class="card">
+            <img src="arguslogo.jpeg" alt="Argus AI Sentinel" class="card-logo">
+            <div class="card-header">
+              <h3 class="card-title">Argus AI Sentinel</h3>
+              <span class="status status--soon">
+                <span class="status-dot"></span>
+                <span data-i18n="statusSoon">COMING SOON</span>
+              </span>
+            </div>
+            <p class="card-desc" data-i18n="argusDesc">Environmental observation and reporting platform for coastal communities. Structured intelligence from citizen science and field observations.</p>
+          </article>
 
-        <p>
-          A FrontSea é uma iniciativa de longo prazo dedicada a explorar como
-          os dados, a ciência e a inteligência artificial podem apoiar decisões
-          mais claras, seguras e informadas em contextos marítimos.
-        </p>
+          <article class="card">
+            <img src="visuslogo.jpeg" alt="Visus AI Navigation" class="card-logo">
+            <div class="card-header">
+              <h3 class="card-title">Visus AI Navigation</h3>
+              <span class="status status--soon">
+                <span class="status-dot"></span>
+                <span data-i18n="statusSoon">COMING SOON</span>
+              </span>
+            </div>
+            <p class="card-desc" data-i18n="visusDesc">Maritime navigation intelligence combining AIS data, weather conditions and route analysis to support safer passage planning.</p>
+          </article>
+        </div>
       </div>
-    </div>
+    </section>
+
+    <!-- Roadmap -->
+    <section id="roadmap">
+      <div class="container reveal">
+        <span class="section-label" data-i18n="roadmapLabel">Roadmap</span>
+        <h2 class="section-title" data-i18n="roadmapTitle">Roadmap</h2>
+        <p class="section-desc" data-i18n="roadmapDesc">Our development trajectory for 2026 and beyond.</p>
+
+        <div class="roadmap">
+          <div class="roadmap-item" data-delay="0">
+            <div class="roadmap-marker">
+              <img src="azurelogo.jpeg" alt="Azure AI Weather">
+            </div>
+            <div class="roadmap-content">
+              <div class="roadmap-year">2026</div>
+              <div class="roadmap-name">Azure AI Weather</div>
+              <span class="status status--deployed">
+                <span class="status-dot"></span>
+                <span data-i18n="statusDeployed">DEPLOYED</span>
+              </span>
+            </div>
+          </div>
+
+          <div class="roadmap-arrow" aria-hidden="true">↓</div>
+
+          <div class="roadmap-item" data-delay="150">
+            <div class="roadmap-marker">
+              <img src="arguslogo.jpeg" alt="Argus AI Sentinel">
+            </div>
+            <div class="roadmap-content">
+              <div class="roadmap-name">Argus AI Sentinel</div>
+              <span class="status status--soon">
+                <span class="status-dot"></span>
+                <span data-i18n="statusSoon">COMING SOON</span>
+              </span>
+            </div>
+          </div>
+
+          <div class="roadmap-arrow" aria-hidden="true">↓</div>
+
+          <div class="roadmap-item" data-delay="300">
+            <div class="roadmap-marker">
+              <img src="visuslogo.jpeg" alt="Visus AI Navigation">
+            </div>
+            <div class="roadmap-content">
+              <div class="roadmap-name">Visus AI Navigation</div>
+              <span class="status status--soon">
+                <span class="status-dot"></span>
+                <span data-i18n="statusSoon">COMING SOON</span>
+              </span>
+            </div>
+          </div>
+
+          <div class="roadmap-arrow" aria-hidden="true">↓</div>
+
+          <div class="roadmap-item" data-delay="450">
+            <div class="roadmap-marker">
+              <img src="logo-dark.png" alt="FrontSea Gear">
+            </div>
+            <div class="roadmap-content">
+              <div class="roadmap-name">FrontSea Gear</div>
+              <span class="status status--dev">
+                <span class="status-dot"></span>
+                <span data-i18n="statusDev">IN DEVELOPMENT</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Operations -->
+    <section id="operations">
+      <div class="container reveal">
+        <span class="section-label" data-i18n="opsLabel">Infrastructure</span>
+        <h2 class="section-title" data-i18n="opsTitle">FrontSea Operations</h2>
+
+        <div class="ops-panel">
+          <p class="section-desc" style="margin-bottom: 0;" data-i18n="opsDesc">Every FrontSea application is connected through an internal operational intelligence layer. This platform centralises the data and intelligence that flows between our products — it is not a public application.</p>
+
+          <div class="ops-grid">
+            <div class="ops-item" data-i18n="ops1">Weather intelligence</div>
+            <div class="ops-item" data-i18n="ops2">Environmental observations</div>
+            <div class="ops-item" data-i18n="ops3">Navigation intelligence</div>
+            <div class="ops-item" data-i18n="ops4">Citizen science</div>
+          </div>
+
+          <p class="ops-note" data-i18n="opsNote">FrontSea Operations is an internal system and is not publicly available.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team -->
+    <section id="team">
+      <div class="container reveal">
+        <span class="section-label" data-i18n="teamLabel">People</span>
+        <h2 class="section-title" data-i18n="teamTitle">Team</h2>
+
+        <div class="team-grid">
+          <div class="team-card">
+            <img src="founder.jpeg" alt="" class="team-portrait">
+            <p class="team-role" data-i18n="role1">Founder &amp; Maritime AI</p>
+          </div>
+          <div class="team-card">
+            <img src="OPadvisor.jpeg" alt="" class="team-portrait">
+            <p class="team-role" data-i18n="role2">Operations Advisor</p>
+          </div>
+          <div class="team-card">
+            <img src="aiengineer.jpeg" alt="" class="team-portrait">
+            <p class="team-role" data-i18n="role3">AI &amp; Software Engineer</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gear -->
+    <section id="gear">
+      <div class="container reveal">
+        <span class="section-label" data-i18n="gearLabel">Future</span>
+        <h2 class="section-title" data-i18n="gearTitle">FrontSea Gear</h2>
+
+        <div class="gear-card">
+          <span class="status status--dev" style="margin-bottom: 1.25rem;">
+            <span class="status-dot"></span>
+            <span data-i18n="statusDev">IN DEVELOPMENT</span>
+          </span>
+          <p class="section-desc" style="margin-bottom: 0;" data-i18n="gearDesc">FrontSea Gear will become a sustainable clothing collection designed to support the FrontSea ecosystem. Proceeds will contribute to selected marine conservation initiatives — not as a retail platform, but as a long-term commitment to the ocean we serve.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Blue Paper -->
+    <section id="bluepaper">
+      <div class="container reveal">
+        <div class="bluepaper-card">
+          <span class="section-label" data-i18n="bpLabel">Publication</span>
+          <h2 class="section-title" data-i18n="bpTitle">Blue Paper</h2>
+          <p class="section-desc" data-i18n="bpDesc">Our foundational document outlining the vision, approach and long-term direction of FrontSea Intelligence in building ocean intelligence for maritime environments.</p>
+          <a href="frontsea-Blue-Paper.pdf" target="_blank" rel="noopener" class="btn btn-ghost" data-i18n="btnDownload">Download Blue Paper</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-col">
+            <h4>FrontSea Intelligence</h4>
+            <p data-i18n="footerAbout">Building the future of ocean intelligence through AI, environmental intelligence and maritime technologies.</p>
+          </div>
+          <div class="footer-col">
+            <h4 data-i18n="footerProducts">Products</h4>
+            <ul class="footer-links">
+              <li><a href="https://azureai.pt" target="_blank" rel="noopener">Azure AI Weather</a></li>
+              <li><a href="#ecosystem">Argus AI Sentinel</a></li>
+              <li><a href="#ecosystem">Visus AI Navigation</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4 data-i18n="footerResources">Resources</h4>
+            <ul class="footer-links">
+              <li><a href="frontsea-Blue-Paper.pdf" target="_blank" rel="noopener" data-i18n="footerBP">Blue Paper</a></li>
+              <li><a href="mailto:contact@frontseaintelligence.com" data-i18n="footerContact">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4 data-i18n="footerSocial">Social</h4>
+            <ul class="footer-links">
+              <li><a href="https://x.com/frontseaintel" target="_blank" rel="noopener">X</a></li>
+              <li><a href="https://www.instagram.com/azureai.app" target="_blank" rel="noopener">Instagram</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2026 FrontSea Intelligence</p>
+          <p data-i18n="footerLocation">Portugal</p>
+        </div>
+      </div>
+    </footer>
+
   </div>
 
-  <!-- Bottom section -->
-  <div class="bottom">
-    <a href="frontsea-Blue-Paper.pdf" class="bluepaper-btn" target="_blank">
-      Download Blue Paper
-    </a>
-  </div>
-
-  <div class="site-footer">
-    <div class="footer-inner">
-      <strong>FrontSea Intelligence - Lisbon, Portugal - contact@frontseaintelligence.com</strong>
-      
-    </div>
-  </div>
-
-  <!-- Language script -->
   <script>
+    var translations = {
+      en: {
+        tagline: "The front seat for the Front Sea.",
+        btnLaunch: "Launch Azure AI Weather",
+        btnRead: "Read Blue Paper",
+        btnDownload: "Download Blue Paper",
+        badge1: "AI Powered",
+        badge2: "Ocean Intelligence",
+        badge3: "Made in Portugal",
+        badge4: "Environmental Data",
+        missionLabel: "Mission",
+        missionTitle: "Our Mission",
+        missionDesc: "FrontSea develops intelligent technologies for the ocean. We combine artificial intelligence, weather intelligence, environmental monitoring and maritime technologies to build tools that help people understand and navigate maritime environments with greater clarity and confidence.",
+        ecosystemLabel: "Ecosystem",
+        ecosystemTitle: "Our Ecosystem",
+        ecosystemDesc: "A growing suite of applications designed to bring intelligence to every layer of maritime activity.",
+        azureDesc: "Real-time coastal weather intelligence for sailors, fishermen and maritime professionals. Powered by AI-driven forecasts and local environmental data.",
+        argusDesc: "Environmental observation and reporting platform for coastal communities. Structured intelligence from citizen science and field observations.",
+        visusDesc: "Maritime navigation intelligence combining AIS data, weather conditions and route analysis to support safer passage planning.",
+        statusLive: "LIVE",
+        statusSoon: "COMING SOON",
+        statusDeployed: "DEPLOYED",
+        statusDev: "IN DEVELOPMENT",
+        roadmapLabel: "Roadmap",
+        roadmapTitle: "Roadmap",
+        roadmapDesc: "Our development trajectory for 2026 and beyond.",
+        opsLabel: "Infrastructure",
+        opsTitle: "FrontSea Operations",
+        opsDesc: "Every FrontSea application is connected through an internal operational intelligence layer. This platform centralises the data and intelligence that flows between our products — it is not a public application.",
+        ops1: "Weather intelligence",
+        ops2: "Environmental observations",
+        ops3: "Navigation intelligence",
+        ops4: "Citizen science",
+        opsNote: "FrontSea Operations is an internal system and is not publicly available.",
+        teamLabel: "People",
+        teamTitle: "Team",
+        role1: "Founder & Maritime AI",
+        role2: "Operations Advisor",
+        role3: "AI & Software Engineer",
+        gearLabel: "Future",
+        gearTitle: "FrontSea Gear",
+        gearDesc: "FrontSea Gear will become a sustainable clothing collection designed to support the FrontSea ecosystem. Proceeds will contribute to selected marine conservation initiatives — not as a retail platform, but as a long-term commitment to the ocean we serve.",
+        bpLabel: "Publication",
+        bpTitle: "Blue Paper",
+        bpDesc: "Our foundational document outlining the vision, approach and long-term direction of FrontSea Intelligence in building ocean intelligence for maritime environments.",
+        footerAbout: "Building the future of ocean intelligence through AI, environmental intelligence and maritime technologies.",
+        footerProducts: "Products",
+        footerResources: "Resources",
+        footerBP: "Blue Paper",
+        footerContact: "Contact",
+        footerSocial: "Social",
+        footerLocation: "Portugal"
+      },
+      pt: {
+        tagline: "The front seat for the Front Sea.",
+        btnLaunch: "Iniciar Azure AI Weather",
+        btnRead: "Ler Blue Paper",
+        btnDownload: "Descarregar Blue Paper",
+        badge1: "IA Integrada",
+        badge2: "Inteligência Oceânica",
+        badge3: "Feito em Portugal",
+        badge4: "Dados Ambientais",
+        missionLabel: "Missão",
+        missionTitle: "A Nossa Missão",
+        missionDesc: "A FrontSea desenvolve tecnologias inteligentes para o oceano. Combinamos inteligência artificial, inteligência meteorológica, monitorização ambiental e tecnologias marítimas para construir ferramentas que ajudam as pessoas a compreender e navegar ambientes marítimos com maior clareza e confiança.",
+        ecosystemLabel: "Ecossistema",
+        ecosystemTitle: "O Nosso Ecossistema",
+        ecosystemDesc: "Um conjunto crescente de aplicações concebidas para levar inteligência a cada camada da atividade marítima.",
+        azureDesc: "Inteligência meteorológica costeira em tempo real para navegantes, pescadores e profissionais marítimos. Alimentada por previsões com IA e dados ambientais locais.",
+        argusDesc: "Plataforma de observação e reporte ambiental para comunidades costeiras. Inteligência estruturada a partir de ciência cidadã e observações de campo.",
+        visusDesc: "Inteligência de navegação marítima que combina dados AIS, condições meteorológicas e análise de rotas para apoiar o planeamento de passagens mais seguras.",
+        statusLive: "ATIVO",
+        statusSoon: "EM BREVE",
+        statusDeployed: "IMPLEMENTADO",
+        statusDev: "EM DESENVOLVIMENTO",
+        roadmapLabel: "Roteiro",
+        roadmapTitle: "Roteiro",
+        roadmapDesc: "A nossa trajetória de desenvolvimento para 2026 e além.",
+        opsLabel: "Infraestrutura",
+        opsTitle: "FrontSea Operations",
+        opsDesc: "Cada aplicação FrontSea está ligada através de uma camada interna de inteligência operacional. Esta plataforma centraliza os dados e a inteligência que fluem entre os nossos produtos — não é uma aplicação pública.",
+        ops1: "Inteligência meteorológica",
+        ops2: "Observações ambientais",
+        ops3: "Inteligência de navegação",
+        ops4: "Ciência cidadã",
+        opsNote: "O FrontSea Operations é um sistema interno e não está disponível publicamente.",
+        teamLabel: "Equipa",
+        teamTitle: "Equipa",
+        role1: "Fundador & IA Marítima",
+        role2: "Consultor de Operações",
+        role3: "Engenheiro de IA & Software",
+        gearLabel: "Futuro",
+        gearTitle: "FrontSea Gear",
+        gearDesc: "O FrontSea Gear será uma coleção de vestuário sustentável concebida para apoiar o ecossistema FrontSea. As receitas contribuirão para iniciativas selecionadas de conservação marinha — não como uma plataforma de retalho, mas como um compromisso de longo prazo com o oceano que servimos.",
+        bpLabel: "Publicação",
+        bpTitle: "Blue Paper",
+        bpDesc: "O nosso documento fundacional que descreve a visão, a abordagem e a direção de longo prazo da FrontSea Intelligence na construção de inteligência oceânica para ambientes marítimos.",
+        footerAbout: "Construir o futuro da inteligência oceânica através de IA, inteligência ambiental e tecnologias marítimas.",
+        footerProducts: "Produtos",
+        footerResources: "Recursos",
+        footerBP: "Blue Paper",
+        footerContact: "Contacto",
+        footerSocial: "Redes Sociais",
+        footerLocation: "Portugal"
+      }
+    };
+
+    var currentLang = "en";
+
     function setLang(lang) {
-      document.querySelector('.lang-en').style.display = lang === 'en' ? 'block' : 'none';
-      document.querySelector('.lang-pt').style.display = lang === 'pt' ? 'block' : 'none';
+      currentLang = lang;
+      document.documentElement.lang = lang === "pt" ? "pt-PT" : "en";
+
+      document.getElementById("lang-en").classList.toggle("active", lang === "en");
+      document.getElementById("lang-pt").classList.toggle("active", lang === "pt");
+
+      document.querySelectorAll("[data-i18n]").forEach(function (el) {
+        var key = el.getAttribute("data-i18n");
+        if (translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
     }
-    setLang('en');
+
+    setLang("en");
+
+    /* Scroll reveal */
+    var revealObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+
+    document.querySelectorAll(".reveal").forEach(function (el) {
+      revealObserver.observe(el);
+    });
+
+    /* Roadmap staggered reveal */
+    var roadmapObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          var items = entry.target.querySelectorAll(".roadmap-item");
+          items.forEach(function (item) {
+            var delay = parseInt(item.getAttribute("data-delay") || "0", 10);
+            setTimeout(function () {
+              item.classList.add("visible");
+            }, delay);
+          });
+          roadmapObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    var roadmapEl = document.querySelector(".roadmap");
+    if (roadmapEl) roadmapObserver.observe(roadmapEl);
   </script>
 
 </body>
 </html>
-
-
-
-
-
